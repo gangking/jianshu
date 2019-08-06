@@ -21,7 +21,7 @@ import { actionCreators } from './store';
 
 class Header extends React.Component {
   render () {
-    const { focused, handleInputFocus, handleInputBlur } = this.props;
+    const { focused, handleInputFocus, handleInputBlur, list } = this.props;
     return (
       <HeaderWrapper>
         <Logo></Logo>
@@ -40,12 +40,12 @@ class Header extends React.Component {
             >
               <NavSearch
                 className={focused ? 'focused' : ''}
-                onFocus={handleInputFocus}
+                onFocus={() => { handleInputFocus(list) }}
                 onBlur={handleInputBlur}
               />
             </CSSTransition>
             <span
-              className={focused ? 'focused iconfont' : 'iconfont'}
+              className={focused ? 'focused iconfont zoom' : 'iconfont zoom'}
             >&#xe637;</span>
             {this.getListArea()}
           </SearchWrapper>
@@ -86,8 +86,12 @@ class Header extends React.Component {
           <SearchInfoTitle>
             热门搜索
             <SearchInfoSwitch
-              onClick={() => { handleChangePage(page, totalPage) }}
-            >换一批</SearchInfoSwitch>
+              onClick={() => { handleChangePage(page, totalPage, this.spinIcon) }}
+            >
+              <span
+                ref={(icon) => { this.spinIcon = icon }}
+                className="iconfont spin">&#xe65e;</span>
+              换一批</SearchInfoSwitch>
           </SearchInfoTitle>
           <SearchInfoList>
             {pageList}
@@ -115,8 +119,8 @@ const mapStateToProps = (state) => {
 // store.dispatch 挂载到 props上
 const mapDispathToProps = (dispatch) => {
   return {
-    handleInputFocus (e) {
-      dispatch(actionCreators.getList())
+    handleInputFocus (list) {
+      (list.size === 0) && dispatch(actionCreators.getList());
       dispatch(actionCreators.searchFocus())
     },
     handleInputBlur (e) {
@@ -128,7 +132,19 @@ const mapDispathToProps = (dispatch) => {
     handleMouseLeave () {
       dispatch(actionCreators.mouseLeave())
     },
-    handleChangePage (page, totalPage) {
+    handleChangePage (page, totalPage, spin) {
+      if (!spin.style.transfrom) {
+        spin.style.transfrom = 'rotate(0deg)';
+      }
+      let originAngle = spin.style.transfrom.replace(/[^0-9]/ig, '');
+
+      if (originAngle) {
+        originAngle = parseInt(originAngle, 10)
+      } else {
+        originAngle = 0;
+      }
+      spin.style.transfrom = 'rotate(' + (originAngle + 360) + 'deg)';
+
       if (page < totalPage) {
         page = page + 1;
       } else if (page === totalPage) {
