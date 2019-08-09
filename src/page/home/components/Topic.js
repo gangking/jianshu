@@ -5,7 +5,7 @@ import {
 } from '../style';
 import { connect } from 'react-redux';
 
-class Topic extends React.Component {
+class Topic extends React.PureComponent {
   render () {
     const { topicList } = this.props;
     return (
@@ -13,7 +13,7 @@ class Topic extends React.Component {
         {topicList.map((item, index) => {
           return (
             <TopicItem key={index}>
-              <img className='Topic-pic' src={item.get('imgUrl')} />
+              <img alt='' className='Topic-pic' src={item.get('imgUrl')} />
               {item.get('title')}
             </TopicItem>
           )

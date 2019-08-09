@@ -1,11 +1,12 @@
 import React from 'react';
+import { WriterWrapper } from '../style.js';
 
-class Writer extends React.Component {
+class Writer extends React.PureComponent {
   render () {
     return (
-      <div>
+      <WriterWrapper>
         Writer
-      </div>
+      </WriterWrapper>
     )
   }
 }

@@ -1,13 +1,29 @@
 import React from 'react';
+import { RecommendWrapper, RecommendItem } from '../style.js';
+import { connect } from 'react-redux';
 
-class Recommend extends React.Component {
+class Recommend extends React.PureComponent {
   render () {
+    const { recommendList } = this.props;
     return (
-      <div>
-        Recommend
-      </div>
+      <RecommendWrapper>
+        {
+          recommendList.map((item) => {
+            return (
+              <RecommendItem key={item.get('id')} imgUrl={item.get('imgUrl')}></RecommendItem>
+            )
+          })
+        }
+      </RecommendWrapper>
     )
   }
 }
 
-export default Recommend;
+// 将store中所有数据映射到props
+const mapStateToProps = (state) => {
+  return {
+    recommendList: state.getIn(['home', 'recommendList']),
+  }
+}
+
+export default connect(mapStateToProps, null)(Recommend);

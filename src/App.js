@@ -6,7 +6,9 @@ import store from './store';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './page/home';
-import Detail from './page/detail';
+import Detail from './page/detail/loadable';
+import Login from "./page/login";
+import Write from './page/write';
 
 class App extends React.Component {
   render () {
@@ -15,10 +17,12 @@ class App extends React.Component {
         <Globalstyle></Globalstyle>
         <GlobalstyleIcon></GlobalstyleIcon>
         <Provider store={store}>
-          <Header></Header>
           <Router>
+            <Header></Header>
             <Route path='/' exact component={Home}></Route>
-            <Route path='/detail' exact component={Detail}></Route>
+            <Route path='/detail/:id' exact component={Detail}></Route>
+            <Route path='/login' exact component={Login}></Route>
+            <Route path='/write' exact component={Write}></Route>
           </Router>
         </Provider>
       </div>

@@ -18,7 +18,7 @@ export const HomWrapperLeft = styled.div`
 `;
 
 export const HomWrapperRight = styled.div`
-  width: 240px;
+  width: 280px;
   float:right;
 `;
 
@@ -77,4 +77,62 @@ export const ListInfo = styled.div`
     line-height:24px;
     color:#999;
   }
+`;
+
+
+// 首页推荐
+export const RecommendWrapper = styled.div`
+    margin:30px 0;
+    width:280px;
+`;
+
+export const RecommendItem = styled.div`
+    width:280px;
+    height:50px;
+    background:url(${(props) => props.imgUrl}) no-repeat;
+    background-size:contain;
+    margin-bottom:5px;
+`;
+
+// 推荐作者
+export const WriterWrapper = styled.div`
+    width:278px;
+    border:1px solid #dcdcdc;
+    border-radius:3px;
+    height:300px;
+    line-height:300px;
+    text-align:center;
+`;
+
+// 更多文字
+export const LoadMore = styled.div`
+    width:100%;
+    height:40px;
+    line-height:40px;
+    background:#a5a5a5;
+    text-align:center;
+    border-radius:20px;
+    color:#fff;
+    margin:30px 0;
+    cursor:pointer;
+`;
+
+// 回到顶部
+export const BackTop = styled.div`
+    position:fixed;
+    right:100px;
+    bottom:100px;
+    font-size:12px;
+    z-index:1000;
+    width:60px;
+    height:60px;
+    line-height:60px;
+    text-align:center;
+    border:1px solid #ccc;
+    cursor: pointer;
+    border-radius:100%;
+    :hover{
+      background:#ccc;
+      color:white;
+    }
 `;

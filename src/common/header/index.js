@@ -17,18 +17,24 @@ import {
 import { CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { actionCreators } from './store';
+import { Link } from 'react-router-dom';
+import { actionCreators as loginActionCreators } from '../../page/login/store';
 
 
 class Header extends React.Component {
   render () {
-    const { focused, handleInputFocus, handleInputBlur, list } = this.props;
+    const { focused, login, logout, handleInputFocus, handleInputBlur, list } = this.props;
     return (
       <HeaderWrapper>
-        <Logo></Logo>
+        <Link to="/">
+          <Logo></Logo>
+        </Link>
+
         <Nav>
           <NavItem className='left active'>首页</NavItem>
           <NavItem className='left'>下载APP</NavItem>
-          <NavItem className='right'>登录</NavItem>
+          {login ? <NavItem className='right' onClick={logout}>退出</NavItem> : <Link to="/login"><NavItem className='right'>登录</NavItem></Link>}
+          {/* <NavItem className='right'>登录</NavItem> */}
           <NavItem className='right'>
             <span className="iconfont">&#xe636;</span>
           </NavItem>
@@ -51,10 +57,12 @@ class Header extends React.Component {
           </SearchWrapper>
         </Nav>
         <Addition>
-          <Button className='waitting'>
-            <span className="iconfont">&#xe62d;</span>
-            写文章
-          </Button>
+          <Link to='/write'>
+            <Button className='waitting'>
+              <span className="iconfont">&#xe62d;</span>
+              写文章
+            </Button>
+          </Link>
           <Button className='reg'>注册</Button>
         </Addition>
       </HeaderWrapper>
@@ -112,7 +120,8 @@ const mapStateToProps = (state) => {
     list: state.getIn(['header', 'list']),
     page: state.getIn(['header', 'page']),
     mouseIn: state.getIn(['header', 'mouseIn']),
-    totalPage: state.getIn(['header', 'totalPage'])
+    totalPage: state.getIn(['header', 'totalPage']),
+    login: state.getIn(['login', 'login']),
   }
 }
 
@@ -133,17 +142,17 @@ const mapDispathToProps = (dispatch) => {
       dispatch(actionCreators.mouseLeave())
     },
     handleChangePage (page, totalPage, spin) {
-      if (!spin.style.transfrom) {
-        spin.style.transfrom = 'rotate(0deg)';
+      if (!spin.style.transform) {
+        spin.style.transform = 'rotate(0deg)';
       }
-      let originAngle = spin.style.transfrom.replace(/[^0-9]/ig, '');
+      let originAngle = spin.style.transform.replace(/[^0-9]/ig, '');
 
       if (originAngle) {
         originAngle = parseInt(originAngle, 10)
       } else {
         originAngle = 0;
       }
-      spin.style.transfrom = 'rotate(' + (originAngle + 360) + 'deg)';
+      spin.style.transform = 'rotate(' + (originAngle + 360) + 'deg)';
 
       if (page < totalPage) {
         page = page + 1;
@@ -151,6 +160,9 @@ const mapDispathToProps = (dispatch) => {
         page = 1;
       }
       dispatch(actionCreators.changePage(page))
+    },
+    logout () {
+      dispatch(loginActionCreators.logout());
     }
   }
 }
